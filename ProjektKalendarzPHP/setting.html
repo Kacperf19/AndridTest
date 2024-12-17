@@ -1,0 +1,93 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/styleAdd.css">
+
+
+  <meta name="description" content="">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+  <meta property="og:image:alt" content="">
+
+  <link rel="icon" href="img/icona.ico" sizes="any">
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="img/icon.png">
+
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+<div class="container">
+  <div class="user-panel">
+    <h2>Panel użytkownika</h2>
+    <div class="user-panel">
+      <img id="user-image" src="default.jpg" alt="User Image">
+      <h2 id="user-name">Zalogowany użytkownik</h2>
+    </div>
+    <ul >
+      <li><a href="Profile.html">Profil</a></li>
+      <li><a href="index.php">Kalendarz</a></li>
+      <li><a href="setting.php">Ustawienia</a></li>
+
+      <li><a href="logout.php">Wyloguj</a></li>
+
+    </ul>
+  </div>
+
+  <div class="calendar">
+    <h1>Ustawienia Strony</h1>
+
+    <div class="setting">
+      <label for="bg-color">Kolor tła strony</label>
+      <input type="color" id="bg-color" value="#ffffff">
+    </div>
+
+    <div class="setting">
+      <label for="text-color">Kolor tekstu</label>
+      <input type="color" id="text-color" value="#000000">
+    </div>
+
+    <div class="setting">
+      <label for="font-size">Rozmiar czcionki</label>
+      <input type="range" id="font-size" min="10" max="30" value="16">
+    </div>
+
+    <div class="setting">
+      <label for="font-family">Styl czcionki</label>
+      <select id="font-family">
+        <option value="Arial, sans-serif">Arial</option>
+        <option value="'Times New Roman', serif">Times New Roman</option>
+        <option value="'Courier New', monospace">Courier New</option>
+        <option value="'Georgia', serif">Georgia</option>
+      </select>
+    </div>
+
+    <button id="reset-btn">Resetuj ustawienia</button>
+
+
+
+  </div>
+  <div class="container1">
+
+  </div>
+</div>
+
+
+
+<script src="js/app.js"></script>
+<script src="js/script.js"></script>
+
+
+
+</body>
+
+</html>
