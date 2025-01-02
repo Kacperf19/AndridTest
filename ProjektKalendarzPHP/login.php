@@ -3,7 +3,7 @@ session_start();
 @include 'dane.php';
 ?>
 
-  <!DOCTYPE html>
+<!DOCTYPE html>
 
   <html lang="en">
   <head>
@@ -13,6 +13,9 @@ session_start();
     <link rel="stylesheet" href="css/login.css">
   </head>
   <body>
+
+
+
   <div class="login">
     <h1>Zaloguj się</h1>
     <br>
@@ -38,6 +41,7 @@ session_start();
 
     </form>
   </div>
+
   </body>
   </html>
 <?php

@@ -164,4 +164,64 @@ body {
   background-color: #1abc9c;
   color: white;
 }
+.but
+{
+ background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  
+  
+  
+}
+.us
+{
+ background-color: #b14848;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  
+  
+  
+}
+.task-container {
+    width: 300px; 
+    height: 500px; 
+    overflow-y: auto; 
+   
+    padding: 10px; 
+    margin-bottom: 10px;
+}
+.task-container::-webkit-scrollbar {
+    width: 12px; 
+    height: 12px; 
+}
 
+.task-container::-webkit-scrollbar-thumb {
+    background-color: green; 
+    border-radius: 10px;
+}
+
+
+.task-container::-webkit-scrollbar-track {
+    background-color: #5a5a5a; 
+    border-radius: 10px; 
+}
+
+.task-container::-webkit-scrollbar-thumb:hover {
+    background-color: darkgreen; 
+}

@@ -8,9 +8,31 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 
-$username = $_SESSION['username'];
-$userImage = isset($_SESSION['user_image']) ? $_SESSION['user_image'] : 'user.png';
-$imagePath = 'uploads/' . $userImage;
+$host = "localhost";
+$username = "root";
+$password = "";
+$dbname = "testdb";
+$conn = new mysqli($host, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+  die("Połączenie nie powiodło się: " . $conn->connect_error);
+}
+
+
+$user_id = $_SESSION['user_id'];
+$sql = "SELECT * FROM users WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+
+$current_username = $user['username'];
+$current_image = $user['user_image'];
+$imagePath = 'uploads/' . $current_image;
+
+$stmt->close();
+$conn->close();
 ?>
 <!doctype html>
 <html class="no-js" lang="">
@@ -45,7 +67,7 @@ $imagePath = 'uploads/' . $userImage;
     <h2>Panel użytkownika</h2>
     <div class="user-panel">
       <img id="user-image" src="<?php echo htmlspecialchars($imagePath); ?>" alt="User Image">
-      <h2 id="user-name"><?php echo htmlspecialchars($username); ?></h2>
+      <h2 id="user-name"><?php echo htmlspecialchars($current_username); ?></h2>
     </div>
     <ul >
       <li><a href="profile.php">Profil</a></li>
