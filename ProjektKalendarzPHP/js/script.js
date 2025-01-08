@@ -1,132 +1,67 @@
-let currentYear = new Date().getFullYear();
-let currentMonth = new Date().getMonth();
-let selectedDay = null;
-let selectedDayElement = null;
 
-let tasks = JSON.parse(localStorage.getItem("tasks")) || {};
+const SETTINGS_KEY = "page_settings";
 
-function generateCalendar(year, month) {
-  const dzisiaj = new Date();
-  const dzienDzisiaj = dzisiaj.getDate();
-  const czyDzisiaj = (year === dzisiaj.getFullYear() && month === dzisiaj.getMonth());
 
-  const nazwyMiesiecy = [
-    "Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec",
-    "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"
-  ];
-
-  const dniTygodnia = ["Pn", "Wt", "Śr", "Cz", "Pt", "So", "Nd"];
-
-  const dniWMiesiacu = new Date(year, month + 1, 0).getDate();
-  const pierwszyDzien = new Date(year, month, 1).getDay();
-  const startDnia = (pierwszyDzien === 0 ? 6 : pierwszyDzien - 1);
-
-  let html = `
-            <div class="calendar-header">
-                <button onclick="changeMonth(-1)">← Poprzedni</button>
-                ${nazwyMiesiecy[month]} ${year}
-                <button onclick="changeMonth(1)">Następny →</button>
-            </div>
-        `;
-
-  html += "<table><thead><tr>";
-  dniTygodnia.forEach(dzien => {
-    html += `<th>${dzien}</th>`;
-  });
-  html += "</tr></thead><tbody><tr>";
-
-  for (let i = 0; i < startDnia; i++) {
-    html += "<td></td>";
-  }
-
-  for (let dzien = 1; dzien <= dniWMiesiacu; dzien++) {
-    if ((startDnia + dzien - 1) % 7 === 0 && dzien !== 1) {
-      html += "</tr><tr>";
-    }
-
-    const dzisiajKlasa = (czyDzisiaj && dzien === dzienDzisiaj) ? "today" : "";
-    html += `<td class="calendar-day ${dzisiajKlasa}" onclick="selectDay(${year}, ${month}, ${dzien}, this)">${dzien}</td>`;
-  }
-
-  html += "</tr></tbody></table>";
-  document.getElementById("calendar").innerHTML = html;
-}
-
-function changeMonth(direction) {
-  currentMonth += direction;
-
-  if (currentMonth < 0) {
-    currentMonth = 11;
-    currentYear -= 1;
-  } else if (currentMonth > 11) {
-    currentMonth = 0;
-    currentYear += 1;
-  }
-
-  generateCalendar(currentYear, currentMonth);
-}
-
-function selectDay(year, month, day, element) {
-  if (selectedDayElement) {
-    selectedDayElement.classList.remove("selected");
-  }
-
-  selectedDay = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-  selectedDayElement = element;
-
-  selectedDayElement.classList.add("selected");
-
-  updateTaskList();
-}
-
-function addTask() {
-  if (!selectedDay) {
-    alert("Wybierz dzień, zanim dodasz zadanie!");
-    return;
-  }
-
-  const taskInput = document.getElementById("taskInput");
-  const taskText = taskInput.value.trim();
-  const startTimeInput = document.getElementById("startTime").value.trim();
-  const endTimeInput = document.getElementById("endTime").value.trim();
-
-  if (taskText === "") {
-    alert("Zadanie nie może być puste!");
-    return;
-  }
-
-  if (!tasks[selectedDay]) {
-    tasks[selectedDay] = [];
-  }
-
-  tasks[selectedDay].push({ task: taskText, startTime: startTimeInput, endTime: endTimeInput });
-  taskInput.value = "";
-  document.getElementById("startTime").value = "";
-  document.getElementById("endTime").value = "";
-
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-
-  updateTaskList();
-}
-
-function updateTaskList() {
-  const taskList = document.getElementById("taskList");
-  taskList.innerHTML = `<strong>Zadania na dzień ${selectedDay}:</strong>`;
-
-  if (!tasks[selectedDay] || tasks[selectedDay].length === 0) {
-    taskList.innerHTML += "<p>Brak zadań na ten dzień.</p>";
-    return;
-  }
-
-  const list = document.createElement("ul");
-  tasks[selectedDay].forEach((taskObj, index) => {
-    const listItem = document.createElement("li");
-    listItem.textContent = `${index + 1}. ${taskObj.task} (Godzina: ${taskObj.startTime} - ${taskObj.endTime})`;
-    list.appendChild(listItem);
-  });
-  taskList.appendChild(list);
+function applySettings(settings) {
+  if (settings.bgColor) document.body.style.backgroundColor = settings.bgColor;
+  if (settings.textColor) document.body.style.color = settings.textColor;
+  if (settings.fontSize) document.body.style.fontSize = settings.fontSize + "px";
+  if (settings.fontFamily) document.body.style.fontFamily = settings.fontFamily;
 }
 
 
+function loadSettings() {
+  const settings = localStorage.getItem(SETTINGS_KEY);
+  return settings ? JSON.parse(settings) : null;
+}
 
-generateCalendar(currentYear, currentMonth);
+
+function saveSettings(settings) {
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+}
+
+
+function resetSettings() {
+  localStorage.removeItem(SETTINGS_KEY);
+  location.reload();
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const bgColorInput = document.getElementById("bg-color");
+  const textColorInput = document.getElementById("text-color");
+  const fontSizeInput = document.getElementById("font-size");
+  const fontFamilySelect = document.getElementById("font-family");
+  const resetButton = document.getElementById("reset-btn");
+
+
+  const currentSettings = loadSettings() || {
+    bgColor: "#ffffff",
+    textColor: "#000000",
+    fontSize: 16,
+    fontFamily: "Arial, sans-serif",
+  };
+  applySettings(currentSettings);
+
+  if (bgColorInput) bgColorInput.value = currentSettings.bgColor;
+  if (textColorInput) textColorInput.value = currentSettings.textColor;
+  if (fontSizeInput) fontSizeInput.value = currentSettings.fontSize;
+  if (fontFamilySelect) fontFamilySelect.value = currentSettings.fontFamily;
+
+  const updateSettings = () => {
+    const newSettings = {
+      bgColor: bgColorInput.value,
+      textColor: textColorInput.value,
+      fontSize: fontSizeInput.value,
+      fontFamily: fontFamilySelect.value,
+    };
+    saveSettings(newSettings);
+    applySettings(newSettings);
+  };
+
+  if (bgColorInput) bgColorInput.addEventListener("input", updateSettings);
+  if (textColorInput) textColorInput.addEventListener("input", updateSettings);
+  if (fontSizeInput) fontSizeInput.addEventListener("input", updateSettings);
+  if (fontFamilySelect) fontFamilySelect.addEventListener("change", updateSettings);
+  if (resetButton) resetButton.addEventListener("click", resetSettings);
+});
