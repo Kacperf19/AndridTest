@@ -69,7 +69,7 @@ $conn->close();
       <li><a href="index.php">Kalendarz</a></li>
       <li><a href="setting.php">Ustawienia</a></li>
 
-      <li><a href="logout.php">Wyloguj</a></li>
+      <li><a href="logout.php" onclick="reload()">Wyloguj</a></li>
 
     </ul>
   </div>
@@ -178,7 +178,10 @@ $conn->close();
         alert("Nie udało się zapisać zadań.");
       });
   }
-
+  function reload() {
+    localStorage.clear();
+   location.reload();
+}
 
 </script>
 
