@@ -11,18 +11,17 @@ $username = "root";
 $password = "";
 $dbname = "testdb";
 
-// Połączenie z bazą danych
+
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Obsługuje zapytania POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Odczytujemy dane JSON z ciała zapytania
+    
     $data = json_decode(file_get_contents('php://input'), true);
-    $user_id = $_SESSION['user_id']; // Pobieramy ID użytkownika z sesji
+    $user_id = $_SESSION['user_id'];
 
     foreach ($data as $date => $tasks) {
         if (is_array($tasks)) {
